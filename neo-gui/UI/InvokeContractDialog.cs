@@ -3,12 +3,14 @@ using Neo.Ledger;
 using Neo.Network.P2P.Payloads;
 using Neo.Properties;
 using Neo.SmartContract;
+using Neo.Wallets;
 using Neo.VM;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Neo.UI
 {
@@ -22,6 +24,21 @@ namespace Neo.UI
 
         private static readonly Fixed8 net_fee = Fixed8.FromDecimal(0.001m);
 
+        class WalletEntry
+        {
+            public WalletAccount Account;
+
+            public override string ToString()
+            {
+                if (!string.IsNullOrEmpty(Account.Label))
+                {
+                    return $"[{Account.Label}] " + Account.Address;
+                }
+
+                return Account.Address;
+            }
+        }
+
         public InvokeContractDialog(InvocationTransaction tx = null)
         {
             InitializeComponent();
@@ -31,6 +48,13 @@ namespace Neo.UI
                 tabControl1.SelectedTab = tabPage2;
                 textBox6.Text = tx.Script.ToHexString();
             }
+
+            comboBoxSignature.Items.AddRange
+                (
+                Program.CurrentWallet.GetAccounts().Where(u => u.HasKey).Select(u => new WalletEntry() { Account = u }).ToArray()
+                );
+            if(comboBoxSignature.Items.Count > 0)
+            comboBoxSignature.SelectedIndex = 0;
         }
 
         public InvocationTransaction GetTransaction(Fixed8 fee, UInt160 Change_Address = null)
@@ -202,6 +226,10 @@ namespace Neo.UI
             button8.Enabled = parameters_abi.Length > 0;
             UpdateParameters();
             UpdateScript();
+        }
+
+        private void Button9_Click(object sender, EventArgs e)
+        {
         }
     }
 }
