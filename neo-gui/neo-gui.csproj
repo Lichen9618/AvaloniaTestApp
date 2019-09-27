@@ -751,13 +751,13 @@
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.13" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\neo\neo.csproj">
+      <Project>{3d609db3-f0db-4662-b5ba-150024196443}</Project>
+      <Name>neo</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\lucas\Desktop\NativeContract\neo-vm\src\neo-vm\neo-vm.csproj">
       <Project>{322d80bb-7aa2-4721-b2f4-78e58c31b21c}</Project>
       <Name>neo-vm</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\lucas\Desktop\NativeContract\neo\neo\neo.csproj">
-      <Project>{4469292a-2860-40ba-be0c-7fc99a61a4b2}</Project>
-      <Name>neo</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -252,3 +252,5 @@ paket-files/
 *.sln.iml
 
 PublishProfiles
+/neo-gui/本地链
+/neo-gui/德国服务器链

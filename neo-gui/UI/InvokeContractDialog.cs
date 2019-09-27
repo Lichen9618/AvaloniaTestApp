@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Neo.UI.Wrappers;
 using System.Collections.Generic;
 
 namespace Neo.UI
@@ -21,6 +22,7 @@ namespace Neo.UI
         private UInt160 script_hash;
         private ContractParameter[] parameters;
         private ContractParameter[] parameters_abi;
+        private List<TransactionAttributeWrapper> temp_signatures = new List<TransactionAttributeWrapper>();
 
         private static readonly Fixed8 net_fee = Fixed8.FromDecimal(0.001m);
 
@@ -53,8 +55,6 @@ namespace Neo.UI
                 (
                 Program.CurrentWallet.GetAccounts().Where(u => u.HasKey).Select(u => new WalletEntry() { Account = u }).ToArray()
                 );
-            if(comboBoxSignature.Items.Count > 0)
-            comboBoxSignature.SelectedIndex = 0;
         }
 
         public InvocationTransaction GetTransaction(Fixed8 fee, UInt160 Change_Address = null)
@@ -67,7 +67,7 @@ namespace Neo.UI
                     fee = sumFee;
                 }
             }
-
+            tx.Attributes = temp_signatures.Select(p => p.Unwrap()).ToArray();
             if (Helper.CostRemind(tx.Gas.Ceiling(), fee))
             {
                 InvocationTransaction result = Program.CurrentWallet.MakeTransaction(new InvocationTransaction
@@ -230,6 +230,29 @@ namespace Neo.UI
 
         private void Button9_Click(object sender, EventArgs e)
         {
+            if (comboBoxSignature.SelectedItem.ToString() == "")
+            {
+                MessageBox.Show("Please choose address");
+                return;
+            }
+            var index = comboBoxSignature.SelectedIndex;
+                temp_signatures.Add(new TransactionAttributeWrapper
+                {
+                    Usage = TransactionAttributeUsage.Script,
+                    Data = comboBoxSignature.SelectedItem.ToString().ToScriptHash().ToArray()
+                });
+                MessageBox.Show("Success!");
+            comboBoxSignature.Items.RemoveAt(index);
+            if (comboBoxSignature.Items.Count > 0)
+            {
+                comboBoxSignature.SelectedIndex = 0;
+            }
+            else
+            {
+                comboBoxSignature.SelectedText = "";
+                
+            }
+                
         }
     }
 }
