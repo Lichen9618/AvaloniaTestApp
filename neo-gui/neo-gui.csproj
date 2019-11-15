@@ -748,17 +748,10 @@
     <PackageReference Include="Akka">
       <Version>1.3.11</Version>
     </PackageReference>
+    <PackageReference Include="Neo">
+      <Version>2.10.3</Version>
+    </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.13" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\neo\neo.csproj">
-      <Project>{3d609db3-f0db-4662-b5ba-150024196443}</Project>
-      <Name>neo</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\lucas\Desktop\NativeContract\neo-vm\src\neo-vm\neo-vm.csproj">
-      <Project>{322d80bb-7aa2-4721-b2f4-78e58c31b21c}</Project>
-      <Name>neo-vm</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
